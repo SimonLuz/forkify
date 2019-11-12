@@ -1,8 +1,30 @@
 import {elements} from './base'
 
+
 export const getInput = () => {
   return elements.searchInput.value;
 }
+
+
+export const clearInput = () => {
+  elements.searchInput.value = '';
+}
+
+
+export const clearResults = () => {
+  elements.searchResList.innerHTML = '';
+}
+
+
+const limitRecipeTitle = (title, limit=17) => {
+  if (title.length > limit) {
+    
+  }
+  
+  return title;
+  
+}
+
 
 // single function for each functionality!!! This function doesn't have to be exported.
 const renderRecipe = recipe => {
@@ -18,10 +40,12 @@ const renderRecipe = recipe => {
   </a>
 </li>
 `;
+elements.searchResList.insertAdjacentHTML('beforeend', markup);
 
 }
 
-// 1.2.4 index.js
+// 1.2.4 from index.js
 export const renderResults = recipes => {
-  recipes.forEach(el => renderRecipe(recipe))
-}
+  console.log(recipes)
+  recipes.forEach(el => renderRecipe(el))
+};

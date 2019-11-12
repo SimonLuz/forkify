@@ -26,29 +26,30 @@ console.log(`using imported function ${searchView.add(searchView.ID, 100)} and $
 // Each time we reload the page - the state is empty!!!
 const state = {};
 
-//1.2 Separate fucntion for ev.Listener0
+
+//1.2 Separate fucntion for ev.Listener
 const controlSearch = async () => {
+ 
   // 1) get query from the view 
   const query = searchView.getInput(); 
-  // console.log(query)
+
   if (query) {
     // 2) new search object and add query 
     state.search = new Search(query);
 
     // 3) Prepare UI for Results
+    searchView.clearResults();
+    searchView.clearInput();
 
     // 4) Search for recipes 
-    //const recipe =  
     await state.search.getResults();
 
-
     // 5) Render results on UI;
-    console.log(state.search.result);
-
+    searchView.renderResults(state.search.result);
 
   }
-
 };
+
 
 // 1.1 Add eventListener
 elements.searchForm.addEventListener("submit", event => {

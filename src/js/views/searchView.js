@@ -17,12 +17,19 @@ export const clearResults = () => {
 
 
 const limitRecipeTitle = (title, limit=17) => {
-  if (title.length > limit) {
-    
+  console.log(title)
+  let recipeTitle = [];
+  
+  if (title.length >= limit) {
+    title.split(' ').reduce((acc, cur) => {
+      if (acc + cur.length < limit) {
+        recipeTitle.push(cur);
+      }
+      return acc + cur.length;
+    }, 0)
+    return recipeTitle.join(' ') + '...';
   }
-  
   return title;
-  
 }
 
 
@@ -34,15 +41,15 @@ const renderRecipe = recipe => {
           <img src="${recipe.image_url}" alt="${recipe.title}">
       </figure>
       <div class="results__data">
-          <h4 class="results__name">${recipe.title}</h4>
+          <h4 class="results__name">${limitRecipeTitle(recipe.title)}</h4>
           <p class="results__author">${recipe.publisher}</p>
       </div>
-  </a>
-</li>
-`;
-elements.searchResList.insertAdjacentHTML('beforeend', markup);
-
+    </a>
+  </li>
+  `;
+  elements.searchResList.insertAdjacentHTML('beforeend', markup);
 }
+
 
 // 1.2.4 from index.js
 export const renderResults = recipes => {

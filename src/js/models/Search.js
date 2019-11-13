@@ -28,5 +28,3 @@ export default class Search {
     }
   }
 }
-
-// getResults("smoked salmon")

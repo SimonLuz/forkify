@@ -51,8 +51,17 @@ const renderRecipe = recipe => {
 }
 
 
+const renderButtons = (page, numResults, resPerPage) => {
+
+}
+
+
 // 1.2.4 from index.js
-export const renderResults = recipes => {
-  console.log(recipes)
-  recipes.forEach(el => renderRecipe(el))
+export const renderResults = (recipes, page = 3, resPerPage = 5) => {
+  let tens = [];   
+  for (let i = (page - 1)*resPerPage; i < resPerPage * page; i++) {
+    tens.push(recipes[i])
+  }
+  console.log('TENS', tens)
+  tens.forEach(el => renderRecipe(el))
 };

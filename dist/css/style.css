@@ -296,10 +296,11 @@ body {
   .results__btn--prev,
   .likes__btn--prev {
     float: left;
-    flex-direction: row-reverse; }
+   /* flex-direction: row-reverse;*/ }
   .results__btn--next,
   .likes__btn--next {
-    float: right; }
+    float: right;
+    flex-direction: row-reverse; }
 
 .recipe {
   background-color: #F9F5F3;

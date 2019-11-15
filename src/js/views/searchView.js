@@ -13,6 +13,7 @@ export const clearInput = () => {
 
 export const clearResults = () => {
   elements.searchResList.innerHTML = '';
+  elements.searchResPages.innerHTML = '';
 }
 
 
@@ -51,17 +52,48 @@ const renderRecipe = recipe => {
 }
 
 
-const renderButtons = (page, numResults, resPerPage) => {
+// type = prev or next
+const createButton = (page, type) => `
+    <button class="btn-inline results__btn--${type}" data-goto="${type === 'prev' ? page - 1 : page + 1}">
+      <svg class="search__icon">
+        <use href="img/icons.svg#icon-triangle-${type === 'prev' ? 'left' : 'right'}"></use>
+      </svg>
+      <span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
+    </button>
+  `;
 
+const renderButtons = (page, numResults, resPerPage) => {
+  const maxPages = Math.ceil(numResults / resPerPage); // max no of pages
+  let button;
+
+  if (page === 1 && maxPages > 1) {
+    // Btn next page
+    // a lot of repeated code (next, previous), so we use outside function for that
+    button = createButton(page, 'next');
+  } else if (page === maxPages && maxPages > 1) {
+    // Btn previous 
+    button = createButton(page, 'prev');
+  } else if (page < maxPages) {
+    // btn previous and next
+    button = `
+    ${createButton(page, 'next')}
+    ${createButton(page, 'prev')}
+    `;
+  }
+  elements.searchResPages.insertAdjacentHTML('afterbegin', button)
 }
 
 
 // 1.2.4 from index.js
-export const renderResults = (recipes, page = 3, resPerPage = 5) => {
+export const renderResults = ( recipes, page = 1, resPerPage = 10 ) => {
+  // render results of current page
   let tens = [];   
   for (let i = (page - 1)*resPerPage; i < resPerPage * page; i++) {
     tens.push(recipes[i])
   }
-  console.log('TENS', tens)
-  tens.forEach(el => renderRecipe(el))
+  console.log( 'TENS', tens )
+  tens.forEach(el => renderRecipe(el));
+  
+  // render pagination buttons
+  renderButtons(page, recipes.length, resPerPage);
 };

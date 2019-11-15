@@ -56,12 +56,25 @@ const controlSearch = async () => {
 // 1.1 Add eventListener
 elements.searchForm.addEventListener("submit", event => {
   event.preventDefault();
-  console.log(document.querySelector('.search input').value)
+  // console.log(document.querySelector('.search input').value)
   controlSearch();
 })
 
 
+elements.searchResPages.addEventListener('click', e => {
+  const btn = e.target.closest('.btn-inline'); // 'closest' method returns element with a given attr
+  
+  if (btn) {
+    const goToPage = parseInt(btn.dataset.goto, 10);
+  
+  searchView.clearResults();
+  searchView.renderResults(state.search.result, goToPage);
+  }
+})
 
+
+
+/* 
 let arr = 'Pizza with avocado and potatoes';
 let title = []
 
@@ -76,10 +89,9 @@ const reduceArr = (accu, el) => {
 
 }  
 
-
 splitArr.reduce(reduceArr, 0);
 // redu();
 let title2 = title.join(' ')
 console.log(title2)
-
+ */
 

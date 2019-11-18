@@ -18,7 +18,6 @@ export const clearResults = () => {
 
 
 const limitRecipeTitle = (title, limit=17) => {
-  console.log(title)
   let recipeTitle = [];
   
   if (title.length >= limit) {
@@ -91,7 +90,7 @@ export const renderResults = ( recipes, page = 1, resPerPage = 10 ) => {
   for (let i = (page - 1)*resPerPage; i < resPerPage * page; i++) {
     tens.push(recipes[i])
   }
-  console.log( 'TENS', tens )
+  // console.log( 'TENS', tens )
   tens.forEach(el => renderRecipe(el));
   
   // render pagination buttons

@@ -91,9 +91,10 @@ elements.searchResPages.addEventListener('click', e => {
 const controlRecipe = async () => {
   // get ID from URL, delete '#'
   const id = window.location.hash.slice(1); // Jonas: window.location.replace('#', '')
+  
   if (id) {
     // Prepare UI for changes
-
+    renderLoader(elements.recipe);
 
     // Create new recipe object & put it in the STATE
     state.recipe = new Recipe(id);
@@ -109,10 +110,14 @@ const controlRecipe = async () => {
       state.recipe.calcServings()
   
       // Render recipe in the UI
-      console.log(state.recipe);
-    
+      clearLoader();
+
+      console.log(state);
+
+      recipeView.renderRecipe(state.recipe);
+
     } catch(error) {
-      alert('Error Processing Recipe');
+      alert('Error Processing Recipe (controlRecipe.js)', error);
     }
     
   }

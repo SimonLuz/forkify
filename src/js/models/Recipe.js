@@ -43,7 +43,7 @@ export default class Recipe {
     const unitShort = ['tbsp', 'tbsp', 'oz', 'oz', 'tsp', 'tsp', 'cup', 'pound'];
 
     const newIngredients = this.ingredients.map(el => {
-      console.log('ingredient:', el)
+      // console.log('ingredient:', el)
       // Uniform units 
       let ingredient = el.toLowerCase();
       unitLong.forEach((unit, i) => {

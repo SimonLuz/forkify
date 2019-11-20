@@ -20,7 +20,7 @@ export default class Recipe {
       this.ingredients = res.data.recipe.ingredients;
       this.author = res.data.recipe.publisher;
       this.url = res.data.recipe.source_url;
-      // console.log(res);
+      console.log(res);
 
     } catch(error) {
       // console.log(error);
@@ -43,7 +43,7 @@ export default class Recipe {
     const unitShort = ['tbsp', 'tbsp', 'oz', 'oz', 'tsp', 'tsp', 'cup', 'pound'];
 
     const newIngredients = this.ingredients.map(el => {
-      // console.log('ingredient:', el)
+      console.log('ingredient:', el)
       // Uniform units 
       let ingredient = el.toLowerCase();
       unitLong.forEach((unit, i) => {
@@ -63,17 +63,22 @@ export default class Recipe {
         // eg: '1 1/2 cup flour' = [1, 1/2] ---> eval('1+1/2) = 1.5
         // eg: '4 cup flour' = [4]
         const arrCount = arrIngr.slice(0, unitIndex); 
-        
         let count;
+
         if (arrCount.length === 1) {
           count = eval(arrCount[0].replace('-', '+')); 
-        } else {
+        }  else {
           count = eval(arrCount.join('+'));
         }
+
+        if (arrCount.length === 1 && arrCount[0] === '') {
+          count = 1;
+        }
+
         objIngr = {
           count, // in ES5: count: count,
           unit: arrIngr[unitIndex],
-          ingredient: arrIngr.slice(unitIndex + 1).join() 
+          ingredient: arrIngr.slice(unitIndex + 1).join(' ') 
         }
 
       } else if (parseInt(arrIngr[0], 10)) {

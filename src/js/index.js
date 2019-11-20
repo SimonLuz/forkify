@@ -91,15 +91,19 @@ elements.searchResPages.addEventListener('click', e => {
 const controlRecipe = async () => {
   // get ID from URL, delete '#'
   const id = window.location.hash.slice(1); // Jonas: window.location.replace('#', '')
-  
+  console.log(id)
   if (id) {
     // Prepare UI for changes
     renderLoader(elements.recipe);
 
     // Create new recipe object & put it in the STATE
     state.recipe = new Recipe(id);
+    
+    console.log(state.recipe)
 
     try {
+
+      console.log("FROM TRY")
 
       // Get recipe Data and parse ingredients
       await state.recipe.getRecipe();// await - Rest of the code executes after recipe returns => need to add 'async' to the top of the function!!!!!!!!!
@@ -112,12 +116,12 @@ const controlRecipe = async () => {
       // Render recipe in the UI
       clearLoader();
 
-      console.log(state);
+      console.log('STATE', state);
 
       recipeView.renderRecipe(state.recipe);
 
     } catch(error) {
-      alert('Error Processing Recipe (controlRecipe.js)', error);
+      alert('Error Processing Recipe (controlRecipe())', error);
     }
     
   }

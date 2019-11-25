@@ -17,6 +17,15 @@ export const clearResults = () => {
 }
 
 
+export const highlightSelected = id => {
+  const li = Array.from(document.querySelectorAll('.results__link'));
+  li.forEach(el => {
+    el.classList.remove('results__link--active')
+  })
+  document.querySelector(`a[href='#${id}']`).classList.add('results__link--active')
+}
+
+
 const limitRecipeTitle = (title, limit=17) => {
   let recipeTitle = [];
   
@@ -36,7 +45,7 @@ const limitRecipeTitle = (title, limit=17) => {
 // single function for each functionality!!! This function doesn't have to be exported.
 const renderRecipe = recipe => {
   const markup = `<li>
-  <a class="results__link results__link--active" href="#${recipe.recipe_id}">
+  <a class="results__link" href="#${recipe.recipe_id}">
       <figure class="results__fig">
           <img src="${recipe.image_url}" alt="${recipe.title}">
       </figure>

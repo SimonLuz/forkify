@@ -91,19 +91,19 @@ elements.searchResPages.addEventListener('click', e => {
 const controlRecipe = async () => {
   // get ID from URL, delete '#'
   const id = window.location.hash.slice(1); // Jonas: window.location.replace('#', '')
-  console.log(id)
   if (id) {
     // Prepare UI for changes
+
+    recipeView.clearRecipe();
     renderLoader(elements.recipe);
+
+    // Highlight selected search item
+    searchView.highlightSelected(id);
 
     // Create new recipe object & put it in the STATE
     state.recipe = new Recipe(id);
     
-    console.log(state.recipe)
-
     try {
-
-      console.log("FROM TRY")
 
       // Get recipe Data and parse ingredients
       await state.recipe.getRecipe();// await - Rest of the code executes after recipe returns => need to add 'async' to the top of the function!!!!!!!!!
@@ -115,8 +115,6 @@ const controlRecipe = async () => {
   
       // Render recipe in the UI
       clearLoader();
-
-      console.log('STATE', state);
 
       recipeView.renderRecipe(state.recipe);
 
@@ -136,7 +134,22 @@ window.addEventListener('load', controlRecipe);
 ['hashchange', 'load'].forEach(el => window.addEventListener(el, controlRecipe))
 
 
+// Handling recipe button clicks (+ & -) - recipe section
+elements.recipe.addEventListener("click", e => {
+  
+  if (e.target.matches('.btn-decrease, .btn-decrease *')) { // WOOOOW!!!! '.btn-decrease *' means ALL CHILDREN OF THAT ELEMENT!!!!
+  // IMPORTANT: MUST be all as 1 string, not many strings comma-separated!!!!!!!!!!!!!!
+    if (state.recipe.servings > 0) {
+      state.recipe.updateServings("dec");
+    }
+  } else if (e.target.matches('.btn-increase, .btn-increase *')) {
+    state.recipe.updateServings("inc")
+  }
 
+  recipeView.updateServingsIngredients(state.recipe)
+
+  console.log(state.recipe)
+})
 
 /* 
 let arr = 'Pizza with avocado and potatoes';

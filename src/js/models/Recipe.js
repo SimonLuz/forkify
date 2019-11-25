@@ -20,7 +20,7 @@ export default class Recipe {
       this.ingredients = res.data.recipe.ingredients;
       this.author = res.data.recipe.publisher;
       this.url = res.data.recipe.source_url;
-      console.log(res);
+      // console.log(res);
 
     } catch(error) {
       // console.log(error);
@@ -41,9 +41,10 @@ export default class Recipe {
   parseIngredients() {
     const unitLong = ['tablespoons', 'tablespoon', 'ounces', 'ounce', 'teaspoons', 'teaspoon', 'cups', 'pounds'];
     const unitShort = ['tbsp', 'tbsp', 'oz', 'oz', 'tsp', 'tsp', 'cup', 'pound'];
+    const units = [...unitShort, 'kg', 'g']
 
     const newIngredients = this.ingredients.map(el => {
-      console.log('ingredient:', el)
+      // console.log('ingredient:', el)
       // Uniform units 
       let ingredient = el.toLowerCase();
       unitLong.forEach((unit, i) => {
@@ -55,7 +56,7 @@ export default class Recipe {
 
       // Parse ingredients into count, unit and ingredient 
       const arrIngr = ingredient.split(' ');
-      const unitIndex = arrIngr.findIndex(unit => unitShort.includes(unit))
+      const unitIndex = arrIngr.findIndex(unit => units.includes(unit));
 
       let objIngr;
       if (unitIndex > -1) {
@@ -96,11 +97,27 @@ export default class Recipe {
           ingredient: ingredient,
         }
       }
+      // console.log(objIngr)
 
       return objIngr;
 
     });
     this.ingredients = newIngredients;
+    console.log('this.ingredients', this.ingredients)
+  }
+
+  updateServings(type) {
+    // update servings
+    const newServing = type === 'dec' ? this.servings - 1 : this.servings + 1;
+    console.log("TUTAJ: ", this.servings, newServing)
+    // update ingredients
+    this.ingredients.forEach(el => {
+      el.count = (el.count/this.servings) * newServing; //or: el.count*=(newServing / this.servings) 
+
+
+    })
+
+    this.servings = newServing;
   }
 
 }

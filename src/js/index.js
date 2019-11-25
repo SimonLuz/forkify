@@ -16,6 +16,7 @@ console.log(`using imported function ${searchView.add(searchView.ID, 100)} and $
  import * as searchView from './views/searchView';
  import * as recipeView from './views/recipeView';
  import Recipe from './models/Recipe';
+ import List from './models/List';
 // THE STATE: what is the state of the app in any given moment: what's current search query, or recipe, or what's currently in the shopping list? 
 // All of this data is THE STATE and 
 
@@ -148,8 +149,18 @@ elements.recipe.addEventListener("click", e => {
 
   recipeView.updateServingsIngredients(state.recipe)
 
-  console.log(state.recipe)
 })
+
+
+
+
+//////////////////////////////////////////////////
+////////// List CONTROLLER
+const l = new List();
+window.list = l;
+
+
+
 
 /* 
 let arr = 'Pizza with avocado and potatoes';

@@ -1,6 +1,6 @@
 import { elements } from './base';
 
-export const render = item => {
+export const renderItem = item => {
   const markup = `
     <li class="shopping__item" data-itemid=${item.id}>
       <div class="shopping__count">
@@ -16,11 +16,12 @@ export const render = item => {
     </li>
   `;
   elements.shopping.insertAdjacentHTML('beforeend', markup)
-
 };
 
 export const deleteItem = id => {
-  const item = document.querySelector(`[date-itemid="${id}"]`);
+  console.log('listView.js - deleteItem()')
+  const item = document.querySelector(`[data-itemid="${id}"]`);
+  console.log(`listView.js - [date-itemid="${id}"]`, item)
 
   item.parentElement.removeChild(item)
 

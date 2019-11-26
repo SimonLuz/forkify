@@ -15,6 +15,7 @@ console.log(`using imported function ${searchView.add(searchView.ID, 100)} and $
  import { elements, renderLoader, clearLoader } from './views/base';
  import * as searchView from './views/searchView';
  import * as recipeView from './views/recipeView';
+ import * as listView from './views/listView';
  import Recipe from './models/Recipe';
  import List from './models/List';
 // THE STATE: what is the state of the app in any given moment: what's current search query, or recipe, or what's currently in the shopping list? 
@@ -135,6 +136,36 @@ window.addEventListener('load', controlRecipe);
 ['hashchange', 'load'].forEach(el => window.addEventListener(el, controlRecipe))
 
 
+// SHOPPING LIST controler
+const controlList = () => {
+  // Create a new list if there in none yet
+  if (!state.list) state.list = new List();
+
+  // add each ingredient to the list and UI
+  state.recipe.ingredients.forEach(el => {
+    const item = state.list.addItem(el.count, el.unit, el.ingredient);
+    listView.renderItem(item);
+  })
+}
+
+
+// Handle delete and update item list EVENTS
+elements.shopping.addEventListener("click", e => {
+  const id = e.target.closest('.shopping__item').dataset.itemid;
+
+  // DELETE btn
+  // if (e.target.closest('.shopping__delete')) {
+  if (e.target.matches('.shopping__delete *, .shopping__delete')) {
+    // delete from state
+    state.list.deleteItem(id);
+
+    // delete from UI
+    listView.deleteItem(id);
+  }
+
+})
+
+
 // Handling recipe button clicks (+ & -) - recipe section
 elements.recipe.addEventListener("click", e => {
   
@@ -145,6 +176,8 @@ elements.recipe.addEventListener("click", e => {
     }
   } else if (e.target.matches('.btn-increase, .btn-increase *')) {
     state.recipe.updateServings("inc")
+  } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
+    controlList();
   }
 
   recipeView.updateServingsIngredients(state.recipe)

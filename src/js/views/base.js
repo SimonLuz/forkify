@@ -7,7 +7,7 @@ export const elements = {
   searchInput: document.querySelector('.search input'),
   searchResPages: document.querySelector('.results__pages'),
   recipe: document.querySelector('.recipe'),
-  shopping: document.querySelectorAll('shopping__list')
+  shopping: document.querySelector('.shopping__list')
 }
 
 

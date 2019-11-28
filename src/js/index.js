@@ -18,6 +18,7 @@ console.log(`using imported function ${searchView.add(searchView.ID, 100)} and $
  import * as listView from './views/listView';
  import Recipe from './models/Recipe';
  import List from './models/List';
+ import Likes from './models/Likes';
 // THE STATE: what is the state of the app in any given moment: what's current search query, or recipe, or what's currently in the shopping list? 
 // All of this data is THE STATE and 
 
@@ -29,6 +30,7 @@ console.log(`using imported function ${searchView.add(searchView.ID, 100)} and $
 */ 
 // Each time we reload the page - the state is empty!!!
 const state = {};
+window.state = state;
 
 ///////////////////// SEARCH CONTROLLER /////////////
 //1.2 Separate fucntion for ev.Listener
@@ -136,7 +138,10 @@ window.addEventListener('load', controlRecipe);
 ['hashchange', 'load'].forEach(el => window.addEventListener(el, controlRecipe))
 
 
-// SHOPPING LIST controler
+
+/////////////////////////////////////////////////////
+////////////////// SHOPPING LIST controler
+
 const controlList = () => {
   // Create a new list if there in none yet
   if (!state.list) state.list = new List();
@@ -152,7 +157,7 @@ const controlList = () => {
 // Handle delete and update item list EVENTS
 elements.shopping.addEventListener("click", e => {
   const id = e.target.closest('.shopping__item').dataset.itemid;
-
+console.log(e.target)
   // DELETE btn
   // if (e.target.closest('.shopping__delete')) {
   if (e.target.matches('.shopping__delete *, .shopping__delete')) {
@@ -161,9 +166,24 @@ elements.shopping.addEventListener("click", e => {
 
     // delete from UI
     listView.deleteItem(id);
+  } else if (e.target.matches('.shopping__count-value')) {
+    const val = parseFloat(e.target.value); 
+    console.log(val) 
+    state.list.updateCount(id, val)
   }
 
 })
+
+
+////////////////////////////////////////////
+////////// LIKES CONTROLER /////////////////
+// 'like' button is in the 'Recipe' section of UI, so we will 'listen' in the 'recipe' eventListener
+const controlLike = () => {
+  if (!state.likes) state.likes = new Likes();
+  
+}
+
+
 
 
 // Handling recipe button clicks (+ & -) - recipe section
@@ -177,21 +197,19 @@ elements.recipe.addEventListener("click", e => {
   } else if (e.target.matches('.btn-increase, .btn-increase *')) {
     state.recipe.updateServings("inc")
   } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
+    //add ingredients to shopping list
     controlList();
-  }
+  } else if (e.target.matches('.recipe__love, .recipe__love *')) {
+    // 'Like' controller
+    controlLike(); 
+   
+    // state.like = new Likes();
+    // Likes.addLike()
+  } 
 
   recipeView.updateServingsIngredients(state.recipe)
 
 })
-
-
-
-
-//////////////////////////////////////////////////
-////////// List CONTROLLER
-const l = new List();
-window.list = l;
-
 
 
 

@@ -25,8 +25,7 @@ export default class List {
 
   updateCount(id, newCount) {
     console.log("HERE", id, newCount)
-    console.log(this.items.find(el => el.id === id))
-    this.items.find(el => el.id === id).count === newCount; // find() - finds ELEMENT
+    this.items.find(el => el.id === id).count = newCount; // find() - finds ELEMENT
   }
 
 }

@@ -19,10 +19,6 @@ export const renderItem = item => {
 };
 
 export const deleteItem = id => {
-  console.log('listView.js - deleteItem()')
   const item = document.querySelector(`[data-itemid="${id}"]`);
-  console.log(`listView.js - [date-itemid="${id}"]`, item)
-
-  item.parentElement.removeChild(item)
-
+  if (item) item.parentElement.removeChild(item);
 }

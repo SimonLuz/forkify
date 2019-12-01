@@ -180,8 +180,13 @@ console.log(e.target)
 // 'like' button is in the 'Recipe' section of UI, so we will 'listen' in the 'recipe' eventListener
 const controlLike = () => {
   if (!state.likes) state.likes = new Likes();
+  const currentID = state.recipe.id;
   
-}
+  if (!state.likes.isLiked{currentID}) {
+
+  }
+
+} 
 
 
 
@@ -201,10 +206,8 @@ elements.recipe.addEventListener("click", e => {
     controlList();
   } else if (e.target.matches('.recipe__love, .recipe__love *')) {
     // 'Like' controller
+
     controlLike(); 
-   
-    // state.like = new Likes();
-    // Likes.addLike()
   } 
 
   recipeView.updateServingsIngredients(state.recipe)

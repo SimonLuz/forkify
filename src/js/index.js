@@ -16,6 +16,7 @@ console.log(`using imported function ${searchView.add(searchView.ID, 100)} and $
  import * as searchView from './views/searchView';
  import * as recipeView from './views/recipeView';
  import * as listView from './views/listView';
+ import * as likesView from './views/likesView';
  import Recipe from './models/Recipe';
  import List from './models/List';
  import Likes from './models/Likes';
@@ -32,6 +33,7 @@ console.log(`using imported function ${searchView.add(searchView.ID, 100)} and $
 const state = {};
 window.state = state;
 
+/////////////////////////////////////////////////////
 ///////////////////// SEARCH CONTROLLER /////////////
 //1.2 Separate fucntion for ev.Listener
 const controlSearch = async () => {
@@ -120,10 +122,10 @@ const controlRecipe = async () => {
       // Render recipe in the UI
       clearLoader();
 
-      recipeView.renderRecipe(state.recipe);
+      recipeView.renderRecipe(state.recipe, state.likes.isLiked(id));
 
     } catch(error) {
-      alert('Error Processing Recipe (controlRecipe())', error);
+      alert('Error Processing Recipe (controlRecipe())');
     }
     
   }
@@ -154,7 +156,7 @@ const controlList = () => {
 }
 
 
-// Handle delete and update item list EVENTS
+// Handle delete & update item list EVENTS
 elements.shopping.addEventListener("click", e => {
   const id = e.target.closest('.shopping__item').dataset.itemid;
 console.log(e.target)
@@ -175,19 +177,64 @@ console.log(e.target)
 })
 
 
+
 ////////////////////////////////////////////
 ////////// LIKES CONTROLER /////////////////
 // 'like' button is in the 'Recipe' section of UI, so we will 'listen' in the 'recipe' eventListener
 const controlLike = () => {
-  if (!state.likes) state.likes = new Likes();
+  // if (!state.likes) state.likes = new Likes();
   const currentID = state.recipe.id;
   
-  if (!state.likes.isLiked{currentID}) {
+  // Recipe has NOT been liked 
+  if (!state.likes.isLiked(currentID)) {
+    // Add like to the state
+    const newLike = state.likes.addLike(
+        currentID, 
+        state.recipe.title,
+        state.recipe.author,
+        state.recipe.image
+        );
+    
+    // Toggle the like BTN
+      likesView.toggleLikeBtn(state.likes.isLiked(currentID));
+    // Add like to UI
+      likesView.renderLike(newLike);
+      
+  // Recipe has BEEN liked
+  console.log(state.likes)
+  
+  } else {
+    // Remove like to the state
+    state.likes.deleteLike(currentID);
 
+    // Toggle the like BTN
+    likesView.toggleLikeBtn(state.likes.isLiked(false));
+
+    // Remove like from UI
+    likesView.deleteLike(currentID);
   }
+
+  // Show "like" heart icon in top right corner
+  likesView.toggleLikeMenu(state.likes.getNumLikes());
 
 } 
 
+
+// Restore 'Liked' recipes from localStorage into state.likes[]
+window.addEventListener('load', () => {
+  // Initiate empty Likes array
+  state.likes = new Likes();
+  
+  // Restore likes into likes array
+  state.likes.readStorage();
+  
+  // Toggle like menu button
+  likesView.toggleLikeMenu(state.likes.getNumLikes());
+
+  // Render 'liked' items
+  state.likes.likes.forEach(el => likesView.renderLike(el))
+
+});
 
 
 

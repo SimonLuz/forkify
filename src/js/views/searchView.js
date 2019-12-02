@@ -22,11 +22,11 @@ export const highlightSelected = id => {
   li.forEach(el => {
     el.classList.remove('results__link--active')
   })
-  document.querySelector(`a[href='#${id}']`).classList.add('results__link--active')
+  document.querySelector(`.results__link[href='#${id}']`).classList.add('results__link--active')
 }
 
 
-const limitRecipeTitle = (title, limit=17) => {
+export const limitRecipeTitle = (title, limit=17) => {
   let recipeTitle = [];
   
   if (title.length >= limit) {

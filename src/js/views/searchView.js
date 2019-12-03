@@ -22,7 +22,8 @@ export const highlightSelected = id => {
   li.forEach(el => {
     el.classList.remove('results__link--active')
   })
-  document.querySelector(`.results__link[href='#${id}']`).classList.add('results__link--active')
+
+  if (li.length > 0) document.querySelector(`.results__link[href='#${id}']`).classList.add('results__link--active')
 }
 
 
@@ -42,7 +43,6 @@ export const limitRecipeTitle = (title, limit=17) => {
 }
 
 
-// single function for each functionality!!! This function doesn't have to be exported.
 const renderRecipe = recipe => {
   const markup = `<li>
   <a class="results__link" href="#${recipe.recipe_id}">
@@ -76,7 +76,6 @@ const renderButtons = (page, numResults, resPerPage) => {
 
   if (page === 1 && maxPages > 1) {
     // Btn next page
-    // a lot of repeated code (next, previous), so we use outside function for that
     button = createButton(page, 'next');
   } else if (page === maxPages && maxPages > 1) {
     // Btn previous 

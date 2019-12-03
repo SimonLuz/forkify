@@ -1,16 +1,3 @@
-/* TYPES OF IMPORTS
-import str from './models/Search';
-// import { add as ik, multiply as ak, ID as fik } from './views/searchView';
-// 3rd way of IMPORTING:
-import * as searchView from './views/searchView'
-console.log(`using imported function ${searchView.add(searchView.ID, 100)} and ${searchView.multiply(5, 5)}. There's also str from Search.js = ${str}`)
- */
- ////////////////////////////////////////////////////////////////////////
-//   CONTROLLER MODULE // all controller functionalities in 1 file
-/////////////////////////////////////////////////////////////////////////
-
-// THE STATE: 
-
  import Search from './models/Search';
  import { elements, renderLoader, clearLoader } from './views/base';
  import * as searchView from './views/searchView';
@@ -20,18 +7,9 @@ console.log(`using imported function ${searchView.add(searchView.ID, 100)} and $
  import Recipe from './models/Recipe';
  import List from './models/List';
  import Likes from './models/Likes';
-// THE STATE: what is the state of the app in any given moment: what's current search query, or recipe, or what's currently in the shopping list? 
-// All of this data is THE STATE and 
 
-/* Global state of the app
-* - Search object
-* - Current recipe object
-* - Shopping list object 
-* - Liked recipes 
-*/ 
-// Each time we reload the page - the state is empty!!!
+
 const state = {};
-window.state = state;
 
 /////////////////////////////////////////////////////
 ///////////////////// SEARCH CONTROLLER /////////////
@@ -70,14 +48,13 @@ const controlSearch = async () => {
 // 1.1 Add eventListener
 elements.searchForm.addEventListener("submit", event => {
   event.preventDefault();
-  // console.log(document.querySelector('.search input').value)
   controlSearch();
 })
 
 
 
 elements.searchResPages.addEventListener('click', e => {
-  const btn = e.target.closest('.btn-inline'); // 'closest' method returns element with a given attr
+  const btn = e.target.closest('.btn-inline'); 
   
   if (btn) {
     const goToPage = parseInt(btn.dataset.goto, 10);
@@ -91,12 +68,10 @@ elements.searchResPages.addEventListener('click', e => {
 
 ///////////////////// RECIPE CONTROLLER /////////////
 ///////////////////////////////////////////////////////////////
-// Hash eventListener (#8439)
-// https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onhashchange
 
 const controlRecipe = async () => {
   // get ID from URL, delete '#'
-  const id = window.location.hash.slice(1); // Jonas: window.location.replace('#', '')
+  const id = window.location.hash.slice(1); 
   if (id) {
     // Prepare UI for changes
 
@@ -112,7 +87,7 @@ const controlRecipe = async () => {
     try {
 
       // Get recipe Data and parse ingredients
-      await state.recipe.getRecipe();// await - Rest of the code executes after recipe returns => need to add 'async' to the top of the function!!!!!!!!!
+      await state.recipe.getRecipe();
       state.recipe.parseIngredients();
 
       // Calc Time & Serving 
@@ -131,12 +106,7 @@ const controlRecipe = async () => {
   }
 
 }
-/* 
-// Event Listener for URL hash tag #
-window.addEventListener('hashchange', controlRecipe);
-// Event Listener for clearing hash tag
-window.addEventListener('load', controlRecipe);
- */
+
 ['hashchange', 'load'].forEach(el => window.addEventListener(el, controlRecipe))
 
 
@@ -159,9 +129,7 @@ const controlList = () => {
 // Handle delete & update item list EVENTS
 elements.shopping.addEventListener("click", e => {
   const id = e.target.closest('.shopping__item').dataset.itemid;
-console.log(e.target)
   // DELETE btn
-  // if (e.target.closest('.shopping__delete')) {
   if (e.target.matches('.shopping__delete *, .shopping__delete')) {
     // delete from state
     state.list.deleteItem(id);
@@ -170,7 +138,6 @@ console.log(e.target)
     listView.deleteItem(id);
   } else if (e.target.matches('.shopping__count-value')) {
     const val = parseFloat(e.target.value); 
-    console.log(val) 
     state.list.updateCount(id, val)
   }
 
@@ -201,7 +168,6 @@ const controlLike = () => {
       likesView.renderLike(newLike);
       
   // Recipe has BEEN liked
-  console.log(state.likes)
   
   } else {
     // Remove like to the state
@@ -241,8 +207,7 @@ window.addEventListener('load', () => {
 // Handling recipe button clicks (+ & -) - recipe section
 elements.recipe.addEventListener("click", e => {
   
-  if (e.target.matches('.btn-decrease, .btn-decrease *')) { // WOOOOW!!!! '.btn-decrease *' means ALL CHILDREN OF THAT ELEMENT!!!!
-  // IMPORTANT: MUST be all as 1 string, not many strings comma-separated!!!!!!!!!!!!!!
+  if (e.target.matches('.btn-decrease, .btn-decrease *')) {
     if (state.recipe.servings > 0) {
       state.recipe.updateServings("dec");
     }
@@ -253,7 +218,6 @@ elements.recipe.addEventListener("click", e => {
     controlList();
   } else if (e.target.matches('.recipe__love, .recipe__love *')) {
     // 'Like' controller
-
     controlLike(); 
   } 
 
@@ -261,26 +225,4 @@ elements.recipe.addEventListener("click", e => {
 
 })
 
-
-
-/* 
-let arr = 'Pizza with avocado and potatoes';
-let title = []
-
-const splitArr = arr.split(' ')
-
-const reduceArr = (accu, el) => {
-  console.log(accu, el)
-  if (accu + el.length <= 17) {
-    title.push(el)
-  } 
-    return accu + el.length;
-
-}  
-
-splitArr.reduce(reduceArr, 0);
-// redu();
-let title2 = title.join(' ')
-console.log(title2)
- */
 

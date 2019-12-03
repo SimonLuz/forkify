@@ -18,7 +18,7 @@ export default class Likes {
         this.likes.splice(index, 1);
 
         // persist Data in local storage
-        
+        this.persistData();
     }
 
     isLiked(id) { // WOOW! Testing return to TRUE or FALSE!!!!!!!
@@ -29,12 +29,12 @@ export default class Likes {
         return this.likes.length;
     }
 
-    persistData() { // locStorage accepts ONLY STRINGS ===> JSON.stringify()
-        localStorage.setItem('likes', JSON.stringify(this.likes))
+    persistData() { 
+        localStorage.setItem('likes', JSON.stringify(this.likes));
     }
 
     // Retrieve data to put items back into "liked" list after reloading the page
-    readStorage() { // JSON.parse() parses string back to an object
+    readStorage() { 
         const storage = JSON.parse(localStorage.getItem('likes'));
         
         // Restore likes from the local storage

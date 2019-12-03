@@ -13,8 +13,6 @@ export const toggleLikeMenu = numLikes => {
 
 
 export const renderLike = like => {
-  console.log(like.image)
-  console.log(like)
   const markup = `
     <li>
       <a class="likes__link" href="#${like.id}">
@@ -33,6 +31,6 @@ export const renderLike = like => {
 
 
 export const deleteLike = id => {
-  const el = document.querySelector(`.likes__link[href="${id}"]`).parentElement;
+  const el = document.querySelector(`.likes__link[href="#${id}"]`).parentElement;
   if (el) el.parentElement.removeChild(el);
 }

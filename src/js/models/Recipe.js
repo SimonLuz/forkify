@@ -103,18 +103,14 @@ export default class Recipe {
 
     });
     this.ingredients = newIngredients;
-    console.log('this.ingredients', this.ingredients)
   }
 
   updateServings(type) {
     // update servings
     const newServing = type === 'dec' ? this.servings - 1 : this.servings + 1;
-    console.log("TUTAJ: ", this.servings, newServing)
     // update ingredients
     this.ingredients.forEach(el => {
-      el.count = (el.count/this.servings) * newServing; //or: el.count*=(newServing / this.servings) 
-
-
+      el.count = (el.count/this.servings) * newServing; 
     })
 
     this.servings = newServing;

@@ -18,7 +18,7 @@ export const elementStrings = {
   loader: 'loader',
 }
 
-// AJAX Loading Spinner - reusable block of code - put in base.js
+
 export const renderLoader = parent => {
   const loader = `
     <div class='${elementStrings.loader}'>

@@ -6,25 +6,22 @@ export const clearRecipe = () => elements.recipe.innerHTML = '';
 
 const formatCount = count => {
   if (count) {
-		// count 2.5 ===> 2 1/2
-		// count .5 ===> 1/2
-		const [int, dec] = count.toString().split('.').map(el => parseInt(el, 10));
-		if (!dec) return count;
+		
+        const newCount = Math.round(count * 10) / 10;
+		const [int, dec] = newCount.toString().split('.').map(el => parseInt(el, 10));
+		if (!dec) return newCount;
 
 		if (int === 0) {
-			const fr = new Fraction(count);
+			const fr = new Fraction(newCount);
 			return `${fr.numerator}/${fr.denominator}`
 		} else {
-			const fr = new Fraction(count - int);
+			const fr = new Fraction(newCount - int);
 			return `${int} ${fr.numerator}/${fr.denominator}`
 		}
 	}  
 	return '?';
 }
-// console.log('2.5 ', formatCount( 2.5))
-// console.log('0.5 ',formatCount( 0.5))
-// console.log('2.75 ',formatCount(2.75 ))
-// console.log('2.3 ',formatCount( 2.3))
+
 
 const createIngredient = (el) => {
   const markup = `
@@ -44,8 +41,6 @@ const createIngredient = (el) => {
 
 
 export const renderRecipe = (recipe, isLiked=true) => {
-
-//   console.log('RECIPE VIEW: ', recipe)
 
   const markup = `
   <figure class="recipe__fig">
@@ -122,21 +117,18 @@ export const renderRecipe = (recipe, isLiked=true) => {
       </a>
   </div>
   `;
-//   console.log(markup)
   elements.recipe.insertAdjacentHTML('afterbegin', markup);
 }
 
 
 export const updateServingsIngredients = (ing) => {
-	// update servings - MY CODE
+	// update servings 
 	elements.recipe.querySelector('.recipe__info-data--people').innerHTML = ing.servings;
 
-	// update ingredients - MY CODE
+	// update ingredients 
 	const list = elements.recipe.querySelectorAll('.recipe__count');
 
 	list.forEach((el, i) => {
-		// console.log(el)
-		// console.log(ing.ingredients[i])
 		el.innerHTML = formatCount(ing.ingredients[i].count)
 	})
 	
